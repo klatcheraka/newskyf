@@ -1,24 +1,30 @@
-import os
-from dotenv import load_dotenv
+import subprocess
+import sys
+
+print("Python executable:", sys.executable)
+
+# Проверяем версию pip
+pip_version = subprocess.run(["pip", "--version"], capture_output=True, text=True)
+print("Pip version:", pip_version.stdout)
+
+# Список установленных пакетов
+pip_list = subprocess.run(["pip", "list"], capture_output=True, text=True)
+print("Installed packages:\n", pip_list.stdout)
+
+# Основной код
 from telegram import Bot
 
-load_dotenv()
+import os
 
 TOKEN = os.getenv("TOKEN")
-CHANNEL = os.getenv("CHANNEL")
-
 if not TOKEN:
-    raise ValueError("Отсутствует TOKEN! Добавь переменную окружения TOKEN.")
+    print("Ошибка: не найден токен в переменных окружения.")
+    sys.exit(1)
 
 bot = Bot(token=TOKEN)
 
-def main():
-    try:
-        me = bot.get_me()
-        print(f"✅ Бот @{me.username} запущен успешно!")
-        # Здесь можно добавить остальной функционал бота
-    except Exception as e:
-        print(f"❌ Ошибка подключения: {e}")
-
-if __name__ == "__main__":
-    main()
+try:
+    me = bot.get_me()
+    print(f"✅ Токен рабочий! Бот: @{me.username}, ID: {me.id}")
+except Exception as e:
+    print(f"❌ Ошибка подключения: {e}")
