@@ -1,7 +1,7 @@
 services:
   - type: web
     name: skyfreelanc-bot
-    env: python
+    runtime: python  # ✅ исправлено: было env
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: python3 bot.py
@@ -10,4 +10,3 @@ services:
         fromSecret: TOKEN
       - key: CHANNEL
         fromSecret: CHANNEL
-
