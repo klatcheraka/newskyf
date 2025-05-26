@@ -1,30 +1,9 @@
-import subprocess
 import sys
+import pkg_resources
 
 print("Python executable:", sys.executable)
+installed_packages = [p.key for p in pkg_resources.working_set]
+print("Installed packages:", installed_packages)
 
-# Проверяем версию pip
-pip_version = subprocess.run(["pip", "--version"], capture_output=True, text=True)
-print("Pip version:", pip_version.stdout)
-
-# Список установленных пакетов
-pip_list = subprocess.run(["pip", "list"], capture_output=True, text=True)
-print("Installed packages:\n", pip_list.stdout)
-
-# Основной код
-from telegram import Bot
-
-import os
-
-TOKEN = os.getenv("TOKEN")
-if not TOKEN:
-    print("Ошибка: не найден токен в переменных окружения.")
-    sys.exit(1)
-
-bot = Bot(token=TOKEN)
-
-try:
-    me = bot.get_me()
-    print(f"✅ Токен рабочий! Бот: @{me.username}, ID: {me.id}")
-except Exception as e:
-    print(f"❌ Ошибка подключения: {e}")
+from dotenv import load_dotenv
+load_dotenv()
