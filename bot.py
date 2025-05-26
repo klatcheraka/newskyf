@@ -1,9 +1,27 @@
-import sys
-import pkg_resources
+import os
+from telegram import Bot
+from telegram.error import TelegramError
 
-print("Python executable:", sys.executable)
-installed_packages = [p.key for p in pkg_resources.working_set]
-print("Installed packages:", installed_packages)
+def main():
+    TOKEN = os.environ.get("TOKEN")
+    CHANNEL = os.environ.get("CHANNEL")
 
-from dotenv import load_dotenv
-load_dotenv()
+    if not TOKEN or not CHANNEL:
+        print("❌ Ошибка: не заданы переменные окружения TOKEN или CHANNEL")
+        return
+
+    bot = Bot(token=TOKEN)
+
+    try:
+        me = bot.get_me()
+        print(f"✅ Токен рабочий! Бот: @{me.username}, ID: {me.id}")
+        
+        # Пример: отправим сообщение в канал
+        bot.send_message(chat_id=CHANNEL, text="Бот успешно запущен!")
+        print("Сообщение отправлено в канал.")
+        
+    except TelegramError as e:
+        print(f"❌ Ошибка Telegram API: {e}")
+
+if __name__ == "__main__":
+    main()
