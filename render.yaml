@@ -1,9 +1,10 @@
+
 services:
   - type: web
     name: skyfreelanc-bot
     runtime: python3.11
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: python3 -m pip install -r requirements.txt
     startCommand: python3 bot.py
     envVars:
       - key: TOKEN
